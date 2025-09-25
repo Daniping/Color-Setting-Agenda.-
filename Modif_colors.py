@@ -34,14 +34,14 @@ def main():
     if not service:
         return
     
-    # Récupérer les événements des 10 dernières minutes
-    now = datetime.datetime.utcnow().isoformat() + 'Z'  
-    ten_minutes_ago = (datetime.datetime.utcnow() - datetime.timedelta(minutes=10)).isoformat() + 'Z'
+    # Définir la période de recherche : aujourd'hui jusqu'à la fin de l'année en cours
+    now = datetime.datetime.utcnow().isoformat() + 'Z'
+    end_of_year = datetime.datetime(datetime.datetime.utcnow().year, 12, 31, 23, 59, 59).isoformat() + 'Z'
     
     events_result = service.events().list(
         calendarId='primary',
-        timeMin=ten_minutes_ago,
-        timeMax=now,
+        timeMin=now,
+        timeMax=end_of_year,
         singleEvents=True,
         orderBy='startTime'
     ).execute()
@@ -49,9 +49,9 @@ def main():
     events = events_result.get('items', [])
     
     if not events:
-        print("Aucun événement récent trouvé.")
+        print("Aucun événement récent ou futur trouvé pour cette période.")
         return
-        
+    
     for event in events:
         summary = event.get('summary', '').lower()
         event_id = event.get('id')
@@ -67,7 +67,7 @@ def main():
                         eventId=event_id,
                         body=event
                     ).execute()
-                break # Arrêter après avoir trouvé le premier mot-clé
+                break
 
 if __name__ == '__main__':
     main()
