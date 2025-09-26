@@ -39,7 +39,7 @@ def main():
     end_of_year = datetime.datetime(datetime.datetime.utcnow().year, 12, 31, 23, 59, 59).isoformat() + 'Z'
 
     events_result = service.events().list(
-        calendarId='primary',
+        calendarId='dgi.elsf@gmail.com',
         timeMin=yesterday,
         timeMax=end_of_year,
         singleEvents=True,
