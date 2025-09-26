@@ -63,7 +63,7 @@ def main():
                     print(f"Mise à jour de l'événement '{summary}' avec la couleur '{new_color}'.")
                     event['colorId'] = new_color
                     service.events().update(
-                        calendarId='primary',
+                        calendarId='dgi.elsf@gmail.com',
                         eventId=event_id,
                         body=event
                     ).execute()
