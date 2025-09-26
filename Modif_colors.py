@@ -33,21 +33,21 @@ def main():
     service = get_google_calendar_service()
     if not service:
         return
-    
-    # Définir la période de recherche : aujourd'hui jusqu'à la fin de l'année en cours
-    now = datetime.datetime.utcnow().isoformat() + 'Z'
+
+    # Définir la période de recherche : hier jusqu'à la fin de l'année en cours
+    yesterday = (datetime.datetime.utcnow() - datetime.timedelta(days=1)).isoformat() + 'Z'
     end_of_year = datetime.datetime(datetime.datetime.utcnow().year, 12, 31, 23, 59, 59).isoformat() + 'Z'
-    
+
     events_result = service.events().list(
         calendarId='primary',
-        timeMin=now,
+        timeMin=yesterday,
         timeMax=end_of_year,
         singleEvents=True,
         orderBy='startTime'
     ).execute()
-    
+
     events = events_result.get('items', [])
-    
+
     if not events:
         print("Aucun événement récent ou futur trouvé pour cette période.")
         return
